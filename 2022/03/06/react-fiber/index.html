@@ -1,0 +1,1488 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="react fiber, My blog">
+    <meta name="description" content="react 15 渲染方式
+缺点： 如果界面节点多，层次深，递归渲染比较耗时，JS是单线程的，而且UI线程和JS线程是互斥的，页面会出现卡顿的现象。
+
+let element = (&amp;lt;div id=&#39;0&#39; className=&#39;red">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>react fiber | My blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">My blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">My blog</div>
+        <div class="logo-desc">
+            
+            value yourself
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">react fiber</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/react/">
+                                <span class="chip bg-color">react</span>
+                            </a>
+                        
+                            <a href="/tags/fiber/">
+                                <span class="chip bg-color">fiber</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/react/" class="post-category">
+                                react
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-03-06
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="react-15-渲染方式"><a href="#react-15-渲染方式" class="headerlink" title="react 15 渲染方式"></a>react 15 渲染方式</h1><blockquote>
+<p>缺点： 如果界面节点多，层次深，递归渲染比较耗时，JS是单线程的，而且UI线程和JS线程是互斥的，页面会出现卡顿的现象。</p>
+</blockquote>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">let</span> element <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>div id<span class="token operator">=</span><span class="token string">'0'</span> className<span class="token operator">=</span><span class="token string">'red'</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>div id<span class="token operator">=</span><span class="token string">'1'</span><span class="token operator">></span><span class="token number">1</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  <span class="token operator">&lt;</span>div id<span class="token operator">=</span><span class="token string">'2'</span><span class="token operator">></span><span class="token number">2</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span class="token punctuation">)</span>
+
+
+<span class="token keyword">function</span> <span class="token function">render</span><span class="token punctuation">(</span><span class="token parameter">element<span class="token punctuation">,</span> rootParent</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// console.log(JSON.stringify(element, null, 2)) </span>
+  <span class="token keyword">let</span> dom <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span>element<span class="token punctuation">.</span>type<span class="token punctuation">)</span>
+  Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>element<span class="token punctuation">.</span>props<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">v</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>v<span class="token operator">===</span><span class="token string">'children'</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span><span class="token punctuation">(</span>Array<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>element<span class="token punctuation">.</span>props<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        element<span class="token punctuation">.</span>props<span class="token punctuation">[</span>v<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">childrenProp</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+          <span class="token function">render</span><span class="token punctuation">(</span>childrenProp<span class="token punctuation">,</span>dom<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+        dom<span class="token punctuation">.</span>innerHTML<span class="token operator">=</span>element<span class="token punctuation">.</span>props<span class="token punctuation">[</span>v<span class="token punctuation">]</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+      dom<span class="token punctuation">[</span>v<span class="token punctuation">]</span> <span class="token operator">=</span> element<span class="token punctuation">.</span>props<span class="token punctuation">[</span>v<span class="token punctuation">]</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  rootParent<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>dom<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token function">render</span><span class="token punctuation">(</span>element<span class="token punctuation">,</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'root'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="什么是fiber"><a href="#什么是fiber" class="headerlink" title="什么是fiber"></a>什么是fiber</h1><ol>
+<li>fiber 是一种 ** 数据结构**，它可以使用一个纯JS对象来表示</li>
+</ol>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> fiber<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+    stateNode<span class="token punctuation">,</span> <span class="token comment">//节点实例</span>
+    child<span class="token punctuation">,</span>     <span class="token comment">//子节点</span>
+    sibling<span class="token punctuation">,</span>   <span class="token comment">//兄弟节点</span>
+    <span class="token keyword">return</span><span class="token punctuation">,</span>    <span class="token comment">//父节点</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ol start="2">
+<li><p>fiber 是一个执行单元，每次执行完一个执行单元，react就会检查现在还剩多少时间，如果没有时间就将控制权让出去。</p>
+</li>
+<li><p>fiber关键特性</p>
+</li>
+</ol>
+<ul>
+<li>增量渲染 （将渲染任务进行拆分，均匀到每一帧去执行）</li>
+<li>可暂停、终止，复用渲染任务</li>
+<li>不同更新的优先级</li>
+<li>并发方面新的基础能力</li>
+</ul>
+<h1 id="fiber-运行流程"><a href="#fiber-运行流程" class="headerlink" title="fiber 运行流程"></a>fiber 运行流程</h1><h2 id="帧的概念"><a href="#帧的概念" class="headerlink" title="帧的概念"></a>帧的概念</h2><h2 id="window-requestAnimationFrame"><a href="#window-requestAnimationFrame" class="headerlink" title="window.requestAnimationFrame"></a>window.requestAnimationFrame</h2><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame">window.requestAnimationFrame()</a> 告诉浏览器——你希望执行一个动画，并且要求浏览器在下次重绘之前调用指定的回调函数更新动画。该方法需要传入一个回调函数作为参数，该回调函数会在浏览器下一次重绘之前执行</p>
+<blockquote>
+<p>注意：若你想在浏览器下次重绘之前继续更新下一帧动画，那么回调函数自身必须再次调用window.requestAnimationFrame()</p>
+</blockquote>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">window<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>callback<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="范例"><a href="#范例" class="headerlink" title="范例"></a>范例</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> element <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'some-element-you-want-to-animate'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> start<span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">step</span><span class="token punctuation">(</span><span class="token parameter">timestamp</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>start <span class="token operator">===</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span>
+    start <span class="token operator">=</span> timestamp<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> elapsed <span class="token operator">=</span> timestamp <span class="token operator">-</span> start<span class="token punctuation">;</span>
+
+  <span class="token comment">//这里使用`Math.min()`确保元素刚好停在200px的位置。</span>
+  element<span class="token punctuation">.</span>style<span class="token punctuation">.</span>transform <span class="token operator">=</span> <span class="token string">'translateX('</span> <span class="token operator">+</span> Math<span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span><span class="token number">0.1</span> <span class="token operator">*</span> elapsed<span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">'px)'</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>elapsed <span class="token operator">&lt;</span> <span class="token number">2000</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 在两秒后停止动画</span>
+    window<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>step<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+window<span class="token punctuation">.</span><span class="token function">requestAnimationFrame</span><span class="token punctuation">(</span>step<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="requestIdleCallback"><a href="#requestIdleCallback" class="headerlink" title="requestIdleCallback"></a>requestIdleCallback</h2><blockquote>
+<p>这是一个实验中的功能,不是所有的浏览器豆兼容。 react中是模拟了一个类似<code>requestIdleCallback</code>的功能</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestIdleCallback">window.requestIdleCallback()</a> 方法插入一个函数，这个函数将在浏览器<strong>空闲</strong>时期被调用。这使开发者能够在主事件循环上执行后台和低优先级工作，而不会影响延迟关键事件，如动画和输入响应。函数一般会按先进先调用的顺序执行，然而，如果回调函数指定了执行超时时间timeout，则有可能为了在超时前执行函数而打乱执行顺序。</p>
+<p>你可以在空闲回调函数中调用<code>requestIdleCallback()</code>，以便在下一次通过事件循环之前调度另一个回调。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">var</span> handle <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">requestIdleCallback</span><span class="token punctuation">(</span>callback<span class="token punctuation">[</span><span class="token punctuation">,</span> options<span class="token punctuation">]</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h3><p>一个ID，可以把它传入 <code>Window.cancelIdleCallback()</code> 方法来结束回调。</p>
+<h2 id="MessageChannel"><a href="#MessageChannel" class="headerlink" title="MessageChannel"></a>MessageChannel</h2><p>Channel Messaging API的<code>MessageChannel</code> 接口允许我们创建一个新的<strong>消息通道</strong>，并通过它的两个<code>MessagePort</code> 属性发送数据.</p>
+<blockquote>
+<p>此特性在 Web Worker 中可用</p>
+</blockquote>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>在以下代码块中，您可以看到使用<code>MessageChannel</code>构造函数实例化了一个<code>channel</code>对象。当<code>iframe</code>加载完毕，我们使用<code>MessagePort.postMessage</code>方法把一条消息和<code>MessageChannel.port2</code>传递给<code>iframe</code>。<code>handleMessage</code>处理程序将会从<code>iframe</code>中（使用<code>MessagePort.onmessage</code>监听事件）接收到信息，将数据其放入<code>innerHTML</code>中。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">let</span> channel <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MessageChannel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> para <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'p'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> ifr <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'iframe'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> otherWindow <span class="token operator">=</span> ifr<span class="token punctuation">.</span>contentWindow<span class="token punctuation">;</span>
+
+ifr<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"load"</span><span class="token punctuation">,</span> iframeLoaded<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">iframeLoaded</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  otherWindow<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token string">'Hello from the main page!'</span><span class="token punctuation">,</span> <span class="token string">'*'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>channel<span class="token punctuation">.</span>port2<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+channel<span class="token punctuation">.</span>port1<span class="token punctuation">.</span>onmessage <span class="token operator">=</span> handleMessage<span class="token punctuation">;</span>
+<span class="token keyword">function</span> <span class="token function">handleMessage</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  para<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> e<span class="token punctuation">.</span>data<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>   
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>目前<code> requestIdleCallback</code>只有chrome支持</li>
+<li>所以React 利用 MessageChannel模拟了RequestIdleCallback，将毁掉延迟到绘制操作之后执行。</li>
+<li>MessageChannel API 允许我们创建一个新的消息通道，并通过他的两个MessagePort属性发送数据。</li>
+<li>MessageChannel 创建了一个通信的管道，这个管道又两个端口，每个端口都可以用过postMessage发送数据，而应该端口只要绑定了onMessage回调方法，就可以接受另外一个端口传过来的数据。</li>
+<li>MessageChannel是一个宏任务。</li>
+</ul>
+<h3 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">let</span> channel<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">MessageChannel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> port1<span class="token operator">=</span>channel<span class="token punctuation">.</span>port1
+<span class="token keyword">let</span> port2<span class="token operator">=</span>channel<span class="token punctuation">.</span>port2
+port1<span class="token punctuation">.</span><span class="token function-variable function">onmessage</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'port1 receive data:'</span><span class="token punctuation">,</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+port2<span class="token punctuation">.</span><span class="token function-variable function">onmessage</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">e</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'port2 receive data:'</span><span class="token punctuation">,</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+port1<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token string">"port1数据"</span><span class="token punctuation">)</span>
+port2<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token string">"port2数据"</span><span class="token punctuation">)</span>
+
+
+<span class="token comment">//打印结果</span>
+<span class="token comment">/* 
+port2 receive data: port1数据
+port1 receive data: port2数据
+ */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="fiber-执行阶段"><a href="#fiber-执行阶段" class="headerlink" title="fiber 执行阶段"></a>fiber 执行阶段</h2><p> 每次渲染有两个阶段： <code>Reconciliation</code>(协调render阶段)和<code>Commit</code>（提交阶段）</p>
+<ul>
+<li>协调的阶段： 可以认为是<code>Diff</code>阶段，这个阶段可以被终止，这个阶段会找出所有的节点变更，例如节点新增、删除、属性变更等等，这些变更称为副作用。</li>
+<li>提交阶段： 将上一阶段计算出来的需要处理的副作用（effects）一次性执行了。这个阶段必须同步执行，不能被打断。</li>
+</ul>
+<h3 id="遍历规则"><a href="#遍历规则" class="headerlink" title="遍历规则"></a>遍历规则</h3><p>按照深度优先：</p>
+<ol>
+<li>下一个节点：先儿子，后弟弟，再叔叔</li>
+<li>自己的所有子节点完成后自己完成</li>
+</ol>
+<h1 id="深度剖析fiber单元处理过程以及EffectList的构建过程"><a href="#深度剖析fiber单元处理过程以及EffectList的构建过程" class="headerlink" title="深度剖析fiber单元处理过程以及EffectList的构建过程"></a>深度剖析fiber单元处理过程以及EffectList的构建过程</h1><p>React 框架内部的运作可以分为3层：</p>
+<ul>
+<li>virtual DOM 层，描述页面长什么样</li>
+<li>Reconciler 层，负责调用组件生命周期方法，进行Diff算法等。</li>
+<li>Renderer 层，根据不同的平台，渲染出相应的页面.</li>
+</ul>
+<p>为了加以区分，以前的 Reconciler 被命名为<code>Stack Reconciler</code>。Stack Reconciler 运作的过程是不能被打断的，必须一条道走到黑,而 <code>Fiber Reconciler</code> 每执行一段时间，都会将控制权交回给浏览器，可以<code>分段执行</code>。<br>为了达到这种效果，就需要有一个调度器 (<code>Scheduler</code>) 来进行任务分配。任务的优先级有六种:</p>
+<ul>
+<li><code>synchronous</code>，与之前的Stack Reconciler操作一样，同步执行</li>
+<li><code>task</code>，在next tick之前执行</li>
+<li><code>animation</code>，下一帧之前执行</li>
+<li><code>high</code>，在不久的将来立即执行</li>
+<li><code>low</code>，稍微延迟执行也没关系</li>
+<li><code>offscreen</code>，下一次render时或scroll时才执行</li>
+</ul>
+<p>Fiber Reconciler 在执行过程中，会分为 2 个阶段。<br><img src="https://segmentfault.com/img/bVboJH6?w=1076&h=697" alt="阶段图"></p>
+<ol>
+<li>阶段一，生成 Fiber 树，得出需要更新的节点信息。这一步是一个渐进的过程，可以被打断。</li>
+<li>阶段二，将需要更新的节点一次过批量更新，这个过程不能被打断。</li>
+</ol>
+<h2 id="fiber树"><a href="#fiber树" class="headerlink" title="fiber树"></a>fiber树</h2><p>Fiber Reconciler 在阶段一进行 Diff 计算的时候，会生成一棵 Fiber 树。这棵树是在 Virtual DOM 树的基础上增加额外的信息来生成的，它本质来说是一个链表。<br>![])(<a target="_blank" rel="noopener" href="https://segmentfault.com/img/bVboJHa?w=970&amp;h=732">https://segmentfault.com/img/bVboJHa?w=970&amp;h=732</a>)<br>![])(<a target="_blank" rel="noopener" href="https://segmentfault.com/img/bVboJHa?w=970&amp;h=732">https://segmentfault.com/img/bVboJHa?w=970&amp;h=732</a>)</p>
+<p>Fiber 树在首次渲染的时候会一次过生成。在后续需要 Diff 的时候，会根据已有树和最新 Virtual DOM 的信息，生成一棵新的树。这颗新树每生成一个新的节点，都会将控制权交回给主线程，去检查有没有优先级更高的任务需要执行。如果没有，则继续构建树的过程：<br><img src="https://segmentfault.com/img/bVboJNB?w=872&h=785"></p>
+<p>如果过程中有优先级更高的任务需要进行，则 <code>Fiber Reconciler</code> 会丢弃正在生成的树，在空闲的时候再重新执行一遍。</p>
+<p>在构造 Fiber 树的过程中，Fiber Reconciler 会将需要更新的节点信息保存在<code>Effect List</code>当中，在阶段二执行的时候，会批量更新相应的节点。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">let</span> root <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">"root"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 下一个工作单元</span>
+<span class="token comment">// fiber 其实也是一个普通的JS对象</span>
+<span class="token keyword">let</span> workInProgressRoot <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">stateNode</span><span class="token operator">:</span> root<span class="token punctuation">,</span> <span class="token comment">// 此fiber对应的DOM节点</span>
+    <span class="token literal-property property">props</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">children</span><span class="token operator">:</span><span class="token punctuation">[</span>element<span class="token punctuation">]</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">let</span> nextUnitOfWork <span class="token operator">=</span> workInProgressRoot<span class="token punctuation">;</span>
+<span class="token keyword">const</span>  <span class="token constant">PLACEMENT</span> <span class="token operator">=</span> <span class="token string">"PLACEMENT"</span>
+<span class="token comment">// 定义一个工作循环</span>
+<span class="token keyword">function</span> <span class="token function">workloop</span><span class="token punctuation">(</span><span class="token parameter">deadline</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"开始工作循环"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>nextUnitOfWork<span class="token operator">&amp;&amp;</span>deadline<span class="token punctuation">.</span><span class="token function">timeRemaining</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">></span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        nextUnitOfWork <span class="token operator">=</span>  <span class="token function">performUnitOfWork</span><span class="token punctuation">(</span>nextUnitOfWork<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>nextUnitOfWork<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token function">commitRoot</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">function</span> <span class="token function">commitRoot</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+    <span class="token keyword">let</span> currentFiber <span class="token operator">=</span> workInProgressRoot<span class="token punctuation">.</span>firstEffect<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>currentFiber<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"commitRoot:"</span><span class="token punctuation">,</span> currentFiber<span class="token punctuation">.</span>props<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>currentFiber<span class="token punctuation">.</span>effectTag <span class="token operator">===</span> <span class="token string">"PLACEMENT"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+            currentFiber<span class="token punctuation">.</span>return<span class="token punctuation">.</span>stateNode<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>currentFiber<span class="token punctuation">.</span>stateNode<span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+        currentFiber <span class="token operator">=</span> currentFiber<span class="token punctuation">.</span>nextEffect<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    workInProgressRoot <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">/**
+ * beginWork 1. 创建此Fiber的真实DOM
+ * 通过虚拟DOM创建Fiber树结构
+ * @param &#123;*&#125; workingInProgressFiber 
+ */</span>
+<span class="token keyword">function</span> <span class="token function">performUnitOfWork</span><span class="token punctuation">(</span><span class="token parameter">workingInProgressFiber</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+    <span class="token function">beginWork</span><span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">.</span>child<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">return</span> workingInProgressFiber<span class="token punctuation">.</span>child<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token comment">// 如果没有儿子当前节点其实就结束了</span>
+        <span class="token function">completeUnitOfWork</span><span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">.</span>sibling<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+            <span class="token keyword">return</span> workingInProgressFiber<span class="token punctuation">.</span>sibling<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        workingInProgressFiber <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">.</span>return<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">function</span> <span class="token function">completeUnitOfWork</span><span class="token punctuation">(</span><span class="token parameter">workingInProgressFiber</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"completeUnitOfWork"</span><span class="token punctuation">,</span> workingInProgressFiber<span class="token punctuation">.</span>props<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 构建副作用链，上面只有副作用的节点</span>
+    <span class="token keyword">let</span> returnFiber <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">.</span>return<span class="token punctuation">;</span><span class="token comment">// A1</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>returnFiber<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token comment">// 把当前fiber有副作用的子链表挂载到父身上</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>returnFiber<span class="token punctuation">.</span>firstEffect<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+            returnFiber<span class="token punctuation">.</span>firstEffect <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">.</span>firstEffect<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">.</span>lastEffect<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>returnFiber<span class="token punctuation">.</span>lastEffect<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+                returnFiber<span class="token punctuation">.</span>lastEffect<span class="token punctuation">.</span>nextEffect <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">.</span>firstEffect<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            returnFiber<span class="token punctuation">.</span>lastEffect <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">.</span>lastEffect<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">.</span>effectTag<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>returnFiber<span class="token punctuation">.</span>lastEffect<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                returnFiber<span class="token punctuation">.</span>lastEffect<span class="token punctuation">.</span>nextEffect <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> 
+                returnFiber<span class="token punctuation">.</span>firstEffect <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            returnFiber<span class="token punctuation">.</span>lastEffect <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+
+
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">function</span> <span class="token function">beginWork</span><span class="token punctuation">(</span><span class="token parameter">workingInProgressFiber</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"beginWork"</span><span class="token punctuation">,</span> workingInProgressFiber<span class="token punctuation">.</span>props<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>workingInProgressFiber<span class="token punctuation">.</span>stateNode<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+      workingInProgressFiber<span class="token punctuation">.</span>stateNode <span class="token operator">=</span>   document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">.</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> key <span class="token keyword">in</span> workingInProgressFiber<span class="token punctuation">.</span>props<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token operator">!==</span> <span class="token string">"children"</span><span class="token punctuation">)</span>
+            workingInProgressFiber<span class="token punctuation">.</span>stateNode<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> workingInProgressFiber<span class="token punctuation">.</span>props<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token comment">// 在beginwork 里面是不挂载的</span>
+    <span class="token comment">// 创建子Fiber</span>
+    <span class="token keyword">let</span> previousFiber<span class="token punctuation">;</span>
+    Array<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>workingInProgressFiber<span class="token punctuation">.</span>props<span class="token punctuation">.</span>children<span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span>workingInProgressFiber<span class="token punctuation">.</span>props<span class="token punctuation">.</span>children<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">child<span class="token punctuation">,</span>index</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">let</span> childFiber <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+            <span class="token literal-property property">type</span><span class="token operator">:</span> child<span class="token punctuation">.</span>type<span class="token punctuation">,</span><span class="token comment">// DOM节点类型</span>
+            <span class="token literal-property property">props</span><span class="token operator">:</span> child<span class="token punctuation">.</span>props<span class="token punctuation">,</span>
+            <span class="token keyword">return</span><span class="token operator">:</span> workingInProgressFiber<span class="token punctuation">,</span>
+            <span class="token literal-property property">effectTag</span><span class="token operator">:</span><span class="token constant">PLACEMENT</span><span class="token punctuation">,</span><span class="token comment">// 这个fiber必须要插入到父节点中</span>
+            <span class="token literal-property property">nextEffect</span><span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span><span class="token comment">// 下一个副作用节点</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            workingInProgressFiber<span class="token punctuation">.</span>child <span class="token operator">=</span> childFiber<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span> 
+            previousFiber<span class="token punctuation">.</span>sibling <span class="token operator">=</span> childFiber<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        previousFiber <span class="token operator">=</span> childFiber<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 空闲时间</span>
+<span class="token function">requestIdleCallback</span><span class="token punctuation">(</span>workloop<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="reconcile调和"><a href="#reconcile调和" class="headerlink" title="reconcile调和"></a>reconcile调和</h2><blockquote>
+<p>替换、更新、删除节点，可在fiber上打上tag，例如<code>fiber.effectTag=&#39;REPLACEMENT|DELETION|UPDATE&#39;</code></p>
+</blockquote>
+<ul>
+<li>新老节点类型一样，复用老节点dom,更新props即可</li>
+<li>如果类型不一样，而且新的节点存在，创建新的节点替换老节点</li>
+<li>如果类型不一样，没有新节点，有老节点，删除老节点</li>
+</ul>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">wmshero</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://example.com/2022/03/06/react-fiber/">http://example.com/2022/03/06/react-fiber/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">wmshero</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/react/">
+                                    <span class="chip bg-color">react</span>
+                                </a>
+                            
+                                <a href="/tags/fiber/">
+                                    <span class="chip bg-color">fiber</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/03/06/jsonp/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="jsonp">
+                        
+                        <span class="card-title">jsonp</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-06
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/js/" class="post-category">
+                                    js
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/js/">
+                        <span class="chip bg-color">js</span>
+                    </a>
+                    
+                    <a href="/tags/jsonp/">
+                        <span class="chip bg-color">jsonp</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/03/02/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="正则表达式">
+                        
+                        <span class="card-title">正则表达式</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-category">
+                                    正则表达式
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+                        <span class="chip bg-color">正则表达式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('2'),
+            headingSelector: 'h2, h3, h4,h1'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4,h1').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="tencent"
+                   type="playlist"
+                   id="2968133060"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <a href="/about" target="_blank">wmshero</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/wmshero" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1494601749@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1494601749" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1494601749" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=wmshero" class="tooltipped" target="_blank" data-tooltip=微信联系我: wmshero" data-position="top" data-delay="50">
+        <i class="fab fa-weixin"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
