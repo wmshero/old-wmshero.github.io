@@ -602,6 +602,27 @@ imgs<span class="token punctuation">.</span><span class="token function">forEach
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
+<h1 id="窗口化"><a href="#窗口化" class="headerlink" title="窗口化"></a>窗口化</h1><blockquote>
+<p>只加载当前窗口能显示的DOM元素，当视图变化时，删除隐藏的，添加要显示的DOM就可以保证页面上存在的dom元素数量永远不多，页面就不会卡顿</p>
+</blockquote>
+<p>插件<code>react-window</code></p>
+<p>引用 <code>import &#123; FixedSizeList as List &#125; from &#39;react-window&#39;;</code><br>使用</p>
+<pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">const Row &#x3D; (&#123; index, style &#125;) &#x3D;&gt; (
+  &lt;div style&#x3D;&#123;style&#125;&gt;Row &#123;index&#125;&lt;&#x2F;div&gt;
+);
+ 
+const Example &#x3D; () &#x3D;&gt; (
+  &lt;List
+    height&#x3D;&#123;150&#125;
+    itemCount&#x3D;&#123;1000&#125;
+    itemSize&#x3D;&#123;35&#125;
+    width&#x3D;&#123;300&#125;
+  &gt;
+    &#123;Row&#125;
+  &lt;&#x2F;List&gt;
+);
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h1 id="回流和重绘"><a href="#回流和重绘" class="headerlink" title="回流和重绘"></a>回流和重绘</h1><h2 id="回流"><a href="#回流" class="headerlink" title="回流"></a>回流</h2><blockquote>
 <p>当渲染树中部分或者全部元素的<strong>尺寸、结构或者属性</strong>发生变化时，浏览器会重新渲染部分或者全部文档的过程就称为回流。</p>
@@ -913,8 +934,8 @@ imgs<span class="token punctuation">.</span><span class="token function">forEach
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/js/" class="post-category">
-                                    js
+                            <a href="/categories/javascript/" class="post-category">
+                                    javascript
                                 </a>
                             
                             
@@ -924,8 +945,8 @@ imgs<span class="token punctuation">.</span><span class="token function">forEach
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/js/">
-                        <span class="chip bg-color">js</span>
+                    <a href="/tags/javascript/">
+                        <span class="chip bg-color">javascript</span>
                     </a>
                     
                 </div>
@@ -962,8 +983,8 @@ imgs<span class="token punctuation">.</span><span class="token function">forEach
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/js/" class="post-category">
-                                    js
+                            <a href="/categories/javascript/" class="post-category">
+                                    javascript
                                 </a>
                             
                             
@@ -973,12 +994,12 @@ imgs<span class="token punctuation">.</span><span class="token function">forEach
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/JSBridge/">
-                        <span class="chip bg-color">JSBridge</span>
+                    <a href="/tags/javascript/">
+                        <span class="chip bg-color">javascript</span>
                     </a>
                     
-                    <a href="/tags/js/">
-                        <span class="chip bg-color">js</span>
+                    <a href="/tags/JSBridge/">
+                        <span class="chip bg-color">JSBridge</span>
                     </a>
                     
                 </div>
