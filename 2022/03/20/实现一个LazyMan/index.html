@@ -4,9 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="formily-QA, My blog">
-    <meta name="description" content="formily 是一个庞大且复杂的框架，且日常维护者也仅有几个，具有一定的学习成本，也有不少 bugs。因此在次设置一个文档用于记录问题和查询解决方案。
-QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
+    <meta name="keywords" content="实现一个LazyMan, My blog">
+    <meta name="description" content="参考
+要实现的功能实现一个 LazyMan，按照以下方式调用时，得到相关输出。
+代码示例LazyMan(&#34;Hank&#34;)
+// 打印：Hi! This is Hank!
+
+LazyMan(&#34;Hank&#34;).sleep(10).eat(&#34;dinn">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +22,7 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>formily-QA | My blog</title>
+    <title>实现一个LazyMan | My blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -244,12 +248,12 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">formily-QA</h1>
+                    <h1 class="description center-align post-title">实现一个LazyMan</h1>
                 </div>
             </div>
         </div>
@@ -365,8 +369,8 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/formily/">
-                                <span class="chip bg-color">formily</span>
+                            <a href="/tags/javascript/">
+                                <span class="chip bg-color">javascript</span>
                             </a>
                         
                     </div>
@@ -377,8 +381,8 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/formily/" class="post-category">
-                                formily
+                            <a href="/categories/javascript/" class="post-category">
+                                javascript
                             </a>
                         
                     </div>
@@ -414,17 +418,69 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>formily 是一个庞大且复杂的框架，且日常维护者也仅有几个，具有一定的学习成本，也有不少 bugs。因此在次设置一个文档用于记录问题和查询解决方案。</p>
-<h1 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h1><h2 id="1-为什么我改了-SchemaForm-的-initialValues-但不起作用？"><a href="#1-为什么我改了-SchemaForm-的-initialValues-但不起作用？" class="headerlink" title="1. 为什么我改了 SchemaForm 的 initialValues 但不起作用？"></a>1. 为什么我改了 SchemaForm 的 initialValues 但不起作用？</h2><p><code>initialValues</code> 主要用于异步默认值场景，兼容同步默认值，只要在第 N 次渲染，某个字段还没被设置默认值，第 N+1 次渲染，就可以给其设置默认值</p>
-<h2 id="表单样式不符合？"><a href="#表单样式不符合？" class="headerlink" title="表单样式不符合？"></a>表单样式不符合？</h2><p>Formily 所使用的是 antd 的样式。</p>
-<p>可以通过传 <code>x-components-props: &#123; style: &#123;&#125; &#125;</code>，在 themed 里写覆盖样式等方法来解决。<br>如果样式修改很多，可考虑将原组件重新封装，但不建议重写。</p>
-<p>如何用同一个 schema 渲染 Web 桌面端和 Web 移动端？<br>你需要参照 packages&#x2F;src&#x2F;components&#x2F;Form&#x2F;formily&#x2F;fields&#x2F;mobile.tsx 来创建一个支持双端渲染的 Field。</p>
-<h1 id="已知的-Bug"><a href="#已知的-Bug" class="headerlink" title="已知的 Bug"></a>已知的 Bug</h1><h2 id="1-x-components-props-无法传递-moment-object"><a href="#1-x-components-props-无法传递-moment-object" class="headerlink" title="1. x-components-props 无法传递 moment object"></a>1. x-components-props 无法传递 moment object</h2><p>建议直传 Date</p>
-<h2 id="2-自定义校验规则不能直接使用-x-rules-39-yourCustomRuleName-39"><a href="#2-自定义校验规则不能直接使用-x-rules-39-yourCustomRuleName-39" class="headerlink" title="2. 自定义校验规则不能直接使用 x-rules: &#39;yourCustomRuleName&#39;"></a>2. 自定义校验规则不能直接使用 <code>x-rules: &#39;yourCustomRuleName&#39;</code></h2><p>必须用 <code>x-rules: &#123; yourCustomRuleName: true &#125;</code></p>
-<h2 id="使用-select-始终导出数组"><a href="#使用-select-始终导出数组" class="headerlink" title="使用 select 始终导出数组"></a>使用 select 始终导出数组</h2><p>单选型的情况下尽量使用 <code>Field &#123; type: &#39;string&#39;, enums: [], &#125;</code>，而不是 <code>select。</code></p>
-<h2 id="选项型的-initialValues-会被清空"><a href="#选项型的-initialValues-会被清空" class="headerlink" title="选项型的 initialValues 会被清空"></a>选项型的 initialValues 会被清空</h2><p>当 <code>initialValues</code> 的里存在有值的选项型，同时 <code>Schema</code> 尚未完全加载完毕（通常选项型对应的选项（Enum）是异步加载的，Schema 会经历一个初始化到逐渐加载完毕的过程）。那么在这个时候，Formily 会过滤掉无效的设置，导致 <code>FormState.initialValues</code> 的选项会被清空。</p>
-<p>如果你需要完整的 <code>initialValues</code>，要么保存传入 <code>initialValues</code> 的接口数据，要么在 <code>Schema</code> 完全加载完毕后再渲染表单。</p>
-<h2 id="x-component-props-无法传递将来可能会变化的值，如数组-index"><a href="#x-component-props-无法传递将来可能会变化的值，如数组-index" class="headerlink" title="x-component-props 无法传递将来可能会变化的值，如数组 index"></a>x-component-props 无法传递将来可能会变化的值，如数组 index</h2>
+                <p><a target="_blank" rel="noopener" href="https://github.com/BetaSu/fe-hunter/issues/13">参考</a></p>
+<h1 id="要实现的功能"><a href="#要实现的功能" class="headerlink" title="要实现的功能"></a>要实现的功能</h1><p>实现一个 LazyMan，按照以下方式调用时，得到相关输出。</p>
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token function">LazyMan</span><span class="token punctuation">(</span><span class="token string">"Hank"</span><span class="token punctuation">)</span>
+<span class="token comment">// 打印：Hi! This is Hank!</span>
+
+<span class="token function">LazyMan</span><span class="token punctuation">(</span><span class="token string">"Hank"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span><span class="token string">"dinner"</span><span class="token punctuation">)</span>
+<span class="token comment">// 打印：Hi! This is Hank!</span>
+<span class="token comment">// 等待了 10 秒后</span>
+<span class="token comment">// 打印：Wake up after 10</span>
+<span class="token comment">// 打印：Eat dinner~</span>
+ 
+<span class="token function">LazyMan</span><span class="token punctuation">(</span><span class="token string">"Hank"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span><span class="token string">"dinner"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span><span class="token string">"supper"</span><span class="token punctuation">)</span>
+<span class="token comment">// 打印：Hi This is Hank!</span>
+<span class="token comment">// 打印：Eat dinner~</span>
+<span class="token comment">// 打印：Eat supper~</span>
+ 
+<span class="token function">LazyMan</span><span class="token punctuation">(</span><span class="token string">"Hank"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sleepFirst</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span><span class="token string">"supper"</span><span class="token punctuation">)</span>
+<span class="token comment">// 等待了 5 秒后</span>
+<span class="token comment">// 打印：Wake up after 5</span>
+<span class="token comment">// 打印：Hi This is Hank!</span>
+<span class="token comment">// 打印：Eat supper</span>
+
+<span class="token function">LazyMan</span><span class="token punctuation">(</span><span class="token string">"Hank"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span><span class="token string">"supper"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sleepFirst</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
+<span class="token comment">// 等待了 5 秒后</span>
+<span class="token comment">// 打印：Wake up after 5</span>
+<span class="token comment">// 打印：Hi This is Hank!</span>
+<span class="token comment">// 打印：Eat supper</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js">
+<span class="token keyword">function</span> <span class="token function">LazyMan</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> log <span class="token punctuation">&#125;</span> <span class="token operator">=</span> console<span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token function-variable function">sleep</span> <span class="token operator">=</span> <span class="token parameter">s</span> <span class="token operator">=></span>
+        <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">res</span> <span class="token operator">=></span>
+            <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Wake up after </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>s<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token function">res</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> s <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 定义队列并切设置第一个任务</span>
+    <span class="token keyword">const</span> queue <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Hi! This is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>name<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">!</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 这个里用了 push(x) &amp;&amp; ctx </span>
+    <span class="token comment">// push 的返回值是数组 push 后的长度 所以不会出现 0 , 可以放心在箭头函数里使用</span>
+    <span class="token keyword">const</span> ctx <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token function-variable function">eat</span><span class="token operator">:</span> <span class="token parameter">food</span> <span class="token operator">=></span> queue<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Eat </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>food<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token string">~</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> ctx<span class="token punctuation">,</span>
+        <span class="token function-variable function">sleep</span><span class="token operator">:</span> <span class="token parameter">s</span> <span class="token operator">=></span> queue<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">sleep</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> ctx<span class="token punctuation">,</span>
+        <span class="token function-variable function">sleepFirst</span><span class="token operator">:</span> <span class="token parameter">s</span> <span class="token operator">=></span> queue<span class="token punctuation">.</span><span class="token function">unshift</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token function">sleep</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> ctx
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 延迟在下一个周期执行, 为了收集执行的任务</span>
+    <span class="token function">queueMicrotask</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>queue<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">await</span> queue<span class="token punctuation">.</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> ctx<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="queueMicrotask"><a href="#queueMicrotask" class="headerlink" title="queueMicrotask"></a>queueMicrotask</h2><blockquote>
+<p>当我们期望某段代码，不阻塞当前执行的同步代码，同时又期望它尽可能快地执行时，我们就需要使用它。</p>
+</blockquote>
+<p>在有一些框架和工具里面，如果遇到以上的这种需求，都是使用<code>Process.nextTick</code>和<code>Promise.resolve</code>来解决。<br>但是这些都不是很合适，比如<code>Promise.resolve</code>： 会将异常转换为一个<code>rejected</code> 的<code>Promise</code> 。<code>Promise.resolve</code>会返回一个<code>Promise</code>实例对象，而<code>requestMicrotask</code>不会，而且<code>requestMicrotask</code>语义上更加合适</p>
+<h3 id="潜在问题"><a href="#潜在问题" class="headerlink" title="潜在问题"></a>潜在问题</h3><p>由于它是一个用于指派微任务的底层 api，我们很可能会在其中无限制地指派微任务到其队列之中，这样做的效果就是，浏览器的微任务队列始终处于非空状态，这将导致控制权始终无法交还给浏览器进行下一次事件循环，然后它就卡死了。</p>
+<h3 id="polyfill"><a href="#polyfill" class="headerlink" title="polyfill"></a>polyfill</h3><p><code>core-js</code> 会复杂一些，它同时考虑了 <code>nodejs</code> 和 <code>browser</code> 两种情况，同时利用链表数据结构来模拟微任务队列的执行单元，同时实现了一个 <code>flush</code> 方法表示执行全部的微任务单元。<br>还实现了一个 <code>notify</code> 方法，该方法会根据具体的 js 运行时环境以及 api 的支持情况，分别尝试使用 <code>process.nextTick</code>、<code>MutationObserver</code> 和  <code>Promise.resolve</code> 以及最基本的宏任务 api 来执行 flush 方法，变相模拟微任务的执行过程。</p>
+
                 
             </div>
             <hr/>
@@ -450,7 +506,7 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://wmshero.github.io/2022/03/20/formily-QA/">https://wmshero.github.io/2022/03/20/formily-QA/</a>
+                    <a href="https://wmshero.github.io/2022/03/20/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AALazyMan/">https://wmshero.github.io/2022/03/20/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AALazyMan/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -488,8 +544,8 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/formily/">
-                                    <span class="chip bg-color">formily</span>
+                                <a href="/tags/javascript/">
+                                    <span class="chip bg-color">javascript</span>
                                 </a>
                             
                         </div>
@@ -667,13 +723,13 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/03/20/%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AALazyMan/">
+                <a href="/2022/03/22/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BARxjs/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="实现一个LazyMan">
+                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="深入浅出Rxjs">
                         
-                        <span class="card-title">实现一个LazyMan</span>
+                        <span class="card-title">深入浅出Rxjs</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -684,14 +740,14 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-20
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-22
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/javascript/" class="post-category">
-                                    javascript
+                            <a href="/categories/Rxjs/" class="post-category">
+                                    Rxjs
                                 </a>
                             
                             
@@ -701,8 +757,8 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/javascript/">
-                        <span class="chip bg-color">javascript</span>
+                    <a href="/tags/Rxjs/">
+                        <span class="chip bg-color">Rxjs</span>
                     </a>
                     
                 </div>
@@ -716,13 +772,13 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/03/14/Portals/">
+                <a href="/2022/03/20/formily-QA/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Portals">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="formily-QA">
                         
-                        <span class="card-title">Portals</span>
+                        <span class="card-title">formily-QA</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -733,14 +789,14 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-14
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/react/" class="post-category">
-                                    react
+                            <a href="/categories/formily/" class="post-category">
+                                    formily
                                 </a>
                             
                             
@@ -750,12 +806,8 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/react/">
-                        <span class="chip bg-color">react</span>
-                    </a>
-                    
-                    <a href="/tags/Portals/">
-                        <span class="chip bg-color">Portals</span>
+                    <a href="/tags/formily/">
+                        <span class="chip bg-color">formily</span>
                     </a>
                     
                 </div>
