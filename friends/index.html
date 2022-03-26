@@ -4,9 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="formily-QA, My blog">
-    <meta name="description" content="formily 是一个庞大且复杂的框架，且日常维护者也仅有几个，具有一定的学习成本，也有不少 bugs。因此在次设置一个文档用于记录问题和查询解决方案。
-QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
+    <meta name="keywords" content="friends, My blog">
+    <meta name="description" content="value yourself">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +17,7 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>formily-QA | My blog</title>
+    <title>friends | My blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -249,7 +248,7 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">formily-QA</h1>
+                    <h1 class="description center-align post-title">friends</h1>
                 </div>
             </div>
         </div>
@@ -363,25 +362,12 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/formily/">
-                                <span class="chip bg-color">formily</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/formily/" class="post-category">
-                                formily
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -390,7 +376,7 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-12-10
+                    2022-01-21
                 </div>
                 
 
@@ -414,17 +400,8 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>formily 是一个庞大且复杂的框架，且日常维护者也仅有几个，具有一定的学习成本，也有不少 bugs。因此在次设置一个文档用于记录问题和查询解决方案。</p>
-<h1 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h1><h2 id="1-为什么我改了-SchemaForm-的-initialValues-但不起作用？"><a href="#1-为什么我改了-SchemaForm-的-initialValues-但不起作用？" class="headerlink" title="1. 为什么我改了 SchemaForm 的 initialValues 但不起作用？"></a>1. 为什么我改了 SchemaForm 的 initialValues 但不起作用？</h2><p><code>initialValues</code> 主要用于异步默认值场景，兼容同步默认值，只要在第 N 次渲染，某个字段还没被设置默认值，第 N+1 次渲染，就可以给其设置默认值</p>
-<h2 id="表单样式不符合？"><a href="#表单样式不符合？" class="headerlink" title="表单样式不符合？"></a>表单样式不符合？</h2><p>Formily 所使用的是 antd 的样式。</p>
-<p>可以通过传 <code>x-components-props: &#123; style: &#123;&#125; &#125;</code>，在 themed 里写覆盖样式等方法来解决。<br>如果样式修改很多，可考虑将原组件重新封装，但不建议重写。</p>
-<p>如何用同一个 schema 渲染 Web 桌面端和 Web 移动端？<br>你需要参照 packages&#x2F;src&#x2F;components&#x2F;Form&#x2F;formily&#x2F;fields&#x2F;mobile.tsx 来创建一个支持双端渲染的 Field。</p>
-<h1 id="已知的-Bug"><a href="#已知的-Bug" class="headerlink" title="已知的 Bug"></a>已知的 Bug</h1><h2 id="1-x-components-props-无法传递-moment-object"><a href="#1-x-components-props-无法传递-moment-object" class="headerlink" title="1. x-components-props 无法传递 moment object"></a>1. x-components-props 无法传递 moment object</h2><p>建议直传 Date</p>
-<h2 id="2-自定义校验规则不能直接使用-x-rules-39-yourCustomRuleName-39"><a href="#2-自定义校验规则不能直接使用-x-rules-39-yourCustomRuleName-39" class="headerlink" title="2. 自定义校验规则不能直接使用 x-rules: &#39;yourCustomRuleName&#39;"></a>2. 自定义校验规则不能直接使用 <code>x-rules: &#39;yourCustomRuleName&#39;</code></h2><p>必须用 <code>x-rules: &#123; yourCustomRuleName: true &#125;</code></p>
-<h2 id="使用-select-始终导出数组"><a href="#使用-select-始终导出数组" class="headerlink" title="使用 select 始终导出数组"></a>使用 select 始终导出数组</h2><p>单选型的情况下尽量使用 <code>Field &#123; type: &#39;string&#39;, enums: [], &#125;</code>，而不是 <code>select。</code></p>
-<h2 id="选项型的-initialValues-会被清空"><a href="#选项型的-initialValues-会被清空" class="headerlink" title="选项型的 initialValues 会被清空"></a>选项型的 initialValues 会被清空</h2><p>当 <code>initialValues</code> 的里存在有值的选项型，同时 <code>Schema</code> 尚未完全加载完毕（通常选项型对应的选项（Enum）是异步加载的，Schema 会经历一个初始化到逐渐加载完毕的过程）。那么在这个时候，Formily 会过滤掉无效的设置，导致 <code>FormState.initialValues</code> 的选项会被清空。</p>
-<p>如果你需要完整的 <code>initialValues</code>，要么保存传入 <code>initialValues</code> 的接口数据，要么在 <code>Schema</code> 完全加载完毕后再渲染表单。</p>
-<h2 id="x-component-props-无法传递将来可能会变化的值，如数组-index"><a href="#x-component-props-无法传递将来可能会变化的值，如数组-index" class="headerlink" title="x-component-props 无法传递将来可能会变化的值，如数组 index"></a>x-component-props 无法传递将来可能会变化的值，如数组 index</h2>
+                <p><a target="_blank" rel="noopener" href="https://1494601749.gitbook.io/wmspace/">gitbook</a><br><a target="_blank" rel="noopener" href="https://tvshow.date/">早期博客</a><br><a target="_blank" rel="noopener" href="https://www.yuque.com/u2417328/wm">语雀文档</a></p>
+
                 
             </div>
             <hr/>
@@ -450,7 +427,7 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2021/12/10/formily-QA/">http://example.com/2021/12/10/formily-QA/</a>
+                    <a href="https://wmshero.github.io/friends/index.html">https://wmshero.github.io/friends/index.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -487,11 +464,7 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/formily/">
-                                    <span class="chip bg-color">formily</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -663,66 +636,18 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2022/01/20/jest%E6%B5%8B%E8%AF%95/">
+                <a href="/friends/index.html">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="jest测试">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="friends">
                         
-                        <span class="card-title">jest测试</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-20
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E6%B5%8B%E8%AF%95/" class="post-category">
-                                    测试
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E6%B5%8B%E8%AF%95/">
-                        <span class="chip bg-color">测试</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/12/10/formily-QA/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="formily-QA">
-                        
-                        <span class="card-title">formily-QA</span>
+                        <span class="card-title">friends</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -733,29 +658,55 @@ QA1. 为什么我改了 SchemaForm 的 initialValues 但不起作">
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-12-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-21
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/formily/" class="post-category">
-                                    formily
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            wmshero
                             
                         </span>
                     </div>
                 </div>
 
                 
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/formily/">
-                        <span class="chip bg-color">formily</span>
-                    </a>
-                    
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                本篇&nbsp;<i class="far fa-dot-circle"></i>
+            </div>
+            <div class="card">
+                <a href="/friends/index.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="friends">
+                        
+                        <span class="card-title">friends</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-21
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            wmshero
+                            
+                        </span>
+                    </div>
                 </div>
+
                 
             </div>
         </div>

@@ -5,7 +5,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="jsonp, My blog">
-    <meta name="description" content="">
+    <meta name="description" content="// 动态的加载js文件
+function addScript(src) &amp;#123;
+  const script = document.createElement(&#39;script&#39;);
+  script.src = src;
+  scr">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -417,7 +421,20 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">// 动态的加载js文件</span>
+<span class="token keyword">function</span> <span class="token function">addScript</span><span class="token punctuation">(</span><span class="token parameter">src</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> script <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'script'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  script<span class="token punctuation">.</span>src <span class="token operator">=</span> src<span class="token punctuation">;</span>
+  script<span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token string">"text/javascript"</span><span class="token punctuation">;</span>
+  document<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>script<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">addScript</span><span class="token punctuation">(</span><span class="token string">"http://xxx.xxx.com/xxx.js?callback=handleRes"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// 设置一个全局的callback函数来接收回调结果</span>
+<span class="token keyword">function</span> <span class="token function">handleRes</span><span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 接口返回的数据格式</span>
+<span class="token function">handleRes</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token literal-property property">a</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token literal-property property">b</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -443,7 +460,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2022/03/06/jsonp/">http://example.com/2022/03/06/jsonp/</a>
+                    <a href="https://wmshero.github.io/2022/03/06/jsonp/">https://wmshero.github.io/2022/03/06/jsonp/</a>
                 </span>
             </div>
             <div class="reprint__notice">

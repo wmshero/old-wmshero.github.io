@@ -1,0 +1,1481 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="深入浅出Rxjs, My blog">
+    <meta name="description" content="入门基础Observable 和 Observer
+Observable “可被观察者”
+Observer “观察者”
+连接两者的桥梁是 observable 对象的 函数 subscribe
+
+RxJS中的数据流就是Observable对">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>深入浅出Rxjs | My blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 6.0.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">My blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">My blog</div>
+        <div class="logo-desc">
+            
+            value yourself
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">深入浅出Rxjs</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Rxjs/">
+                                <span class="chip bg-color">Rxjs</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Rxjs/" class="post-category">
+                                Rxjs
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2022-03-22
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="入门基础"><a href="#入门基础" class="headerlink" title="入门基础"></a>入门基础</h1><h2 id="Observable-和-Observer"><a href="#Observable-和-Observer" class="headerlink" title="Observable 和 Observer"></a>Observable 和 Observer</h2><ul>
+<li>Observable “可被观察者”</li>
+<li>Observer “观察者”</li>
+<li>连接两者的桥梁是 observable 对象的 函数 subscribe</li>
+</ul>
+<p>RxJS中的数据流就是Observable对象，Observable实现了下⾯两种设计模式：</p>
+<ul>
+<li>观察者模式（Observer Pattern）</li>
+<li>迭代器模式（Iterator Pattern）</li>
+</ul>
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p>观察者模式要解决的问题，就是在一个持续产生事件的系统中，如何分割功能，让不同模块只需要处理一部分逻辑，这种分而治之的思想是基本的系统设计概念，当然，”分“很容易，关键是如何”治“。<br>观察者模式对“治”这个问题提的解决⽅法是这样，将逻辑分为发布者（<code>Publisher</code>）和观察者（<code>Observer</code>），其中发布者只管负责产⽣事件，它会通知所有注册挂上号的观察者，⽽不关⼼这些观察者如何处理这些事件， 相对的，观察者可以被注册上某个发布者，只管接收到事件之后就处理， ⽽不关⼼这些数据是如何产⽣的。</p>
+<p>在RxJS的世界中，<code>Observable</code>对象是一个发布者，通过<code>observable</code>对象的<code>subscribe</code>，可以吧这个发布者和某个观察者<code>observe</code>连接起来。</p>
+<p>在下面的代码中，<code>source$</code>是一个<code>Observable</code>对象，作为发布者，它产生的”事件“就是连续的三个整数：1，2，3</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span>Observable<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'rxjs/Observable'</span>
+<span class="token keyword">import</span> ‘rxjs<span class="token operator">/</span>add<span class="token operator">/</span>observable<span class="token operator">/</span><span class="token keyword">of</span>'
+
+<span class="token keyword">const</span> source$<span class="token operator">=</span>Observable<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+source$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>扮演观察者<code>Observer</code>的是<code>console.log</code>函数，无论传入什么”事件“，它只管把”事件“输出到<code>console</code>上。</p>
+<p>观察者模式的好处，这个模式的两方可以专心的做一件事，而且可以任意的组合，也就是，复杂的问题被分成三个小问题：</p>
+<ol>
+<li>如何产生事件，这是发布者的责任，在Rxjs中是Observable对象的工作。</li>
+<li>如何响应事件，这是观察者的责任，在Rxjs中由subscribe的参数来决定。</li>
+<li>什么样的发布者关联什么样的观察者，也就是何时调用subscribe。</li>
+</ol>
+<h3 id="迭代器模式"><a href="#迭代器模式" class="headerlink" title="迭代器模式"></a>迭代器模式</h3><p>迭代器 指的是能够遍历一个数据集合的对象。也可称为”游标“，就像是一个移动的指针一样，从集合中的一个元素移到另一个元素，最后完成整个集合的遍历。</p>
+<p>这个设计模式通常包含以下几个函数：</p>
+<ul>
+<li>getCurrent,获取当前被游标所指向的元素。</li>
+<li>moveToNext，将游标移动到下一个元素，调用这个函数之后，getCurrent获得的元素就会不同。</li>
+<li>isDone，判断是否已经遍历完了所有的元素。</li>
+</ul>
+<p>示例：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> iterator<span class="token operator">=</span><span class="token function">getIterator</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">isDone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>iterator<span class="token punctuation">.</span><span class="token function">getCurrent</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	iterator<span class="token punctuation">.</span><span class="token function">moveToNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在编程的世界中，所谓“拉”（<code>pull</code>）或者“推”（<code>push</code>），都是从数据消费者⾓度的描述，⽐如，在⽹页应⽤中，如果是⽹页主动通过AJAX请求从服务器获取数据，这是“拉”，如果⽹页和服务器建⽴了<code>websocket</code>通道，然后，不需要⽹页主动请求，服务器都可以通过websocket通道推送数据到 ⽹页中，这是“推”。在RxJS中，作为迭代器的使⽤者，并不需要主动去从Observable 中“拉”数据，⽽是只要subscribe上Observable对象之后，⾃然就能够收到消息的推送，这就是观察者模式和迭代器两种模式结合的强⼤之处。</p>
+<h4 id="创建Observable"><a href="#创建Observable" class="headerlink" title="创建Observable"></a>创建Observable</h4><p>每个Observable对象，代表的就是一段时间范围内发生的一系列事件<br>Rxjs结合了观察者模式和迭代器模式，故： <code>Observable=publish+iterator</code><br>下面的代码创造和使用了一个简单的Observable对象：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span>Observable<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'rxjs/Observable'</span>
+<span class="token keyword">const</span> <span class="token function-variable function">onSubscribe</span><span class="token operator">=</span><span class="token parameter">observer</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+	observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> source$<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Observable</span><span class="token punctuation">(</span>onSubscribe<span class="token punctuation">)</span>
+<span class="token keyword">const</span> theObserver<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+	<span class="token function-variable function">next</span><span class="token operator">:</span><span class="token parameter">item</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+source$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>theObserver<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//输出：</span>
+<span class="token number">1</span>
+<span class="token number">2</span>
+<span class="token number">3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>分析：</p>
+</blockquote>
+<ol>
+<li>导入了Observable类</li>
+<li>创造了函数onSubscribe,这个函数会被用作Observable构造函数的参数，这个函数参数完全决定了Observable对象的行为。onSubscribe函数接受一个名叫observer的参数，函数体内，调用参数observer的next函数，把数据”推“给observer。</li>
+<li>调⽤Observable构造函数，产⽣⼀个名为source$的数据流对象。</li>
+<li>创造观察者theObserver。</li>
+<li>通过subscribe函数将theObserver和source$关联起来</li>
+</ol>
+<p>创建Observable对象也就是创建⼀个“发布者”，⼀个“观察者”调⽤某个Observable对象的subscribe函数，对应的<code>onSubscribe</code>函数就会被调⽤，参数就是“观察者”对象，<code>onSubscribe</code>函数中可以任意操作“观察者”对象。这个过程，就等于在这个Observable对象上挂了号，以后当这个Observable对象产⽣数据时，观察者就会获得通知。<br>在上⾯的代码中，“观察者”就是<code>theObserver</code>。在RxJS中，Observable是⼀个特殊类，它接受⼀个处理Observer的函数，⽽Observer就是⼀个普通的对象，没有什么神奇之处，对Observer对象的要求只有它必须包含⼀个名为<code>next</code>的属性，这个属性的值是⼀个函数， ⽤于接收被“推”过来的数据。</p>
+<h3 id="跨域时间的Observable"><a href="#跨域时间的Observable" class="headerlink" title="跨域时间的Observable"></a>跨域时间的Observable</h3><p>Observer是被“推”数据的，在执⾏过程中处于被动地位，所以，异步操作，还是应该交给Observable来做，Observable既然能够“推”数据，那同时负责推送数据的节奏，天经地义，完全合理。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">onSubscribe</span><span class="token operator">=</span><span class="token parameter">observer</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+		<span class="token keyword">let</span> number<span class="token operator">=</span><span class="token number">1</span>
+    <span class="token keyword">const</span> handle<span class="token operator">=</span><span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+    	observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span>number<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span><span class="token punctuation">(</span>number<span class="token operator">></span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      	<span class="token function">clearInterval</span><span class="token punctuation">(</span>handle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token number">1000</span><span class="token punctuation">)</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="永无止境的Observable"><a href="#永无止境的Observable" class="headerlink" title="永无止境的Observable"></a>永无止境的Observable</h3><p>Observable可以产⽣<strong>⽆限多</strong>的数据。<br>Observable对象调用观察者<code>next</code>传递数据的动作，可以将产生动作的行为称为”吐出“<br>Observable对象每吐出一个数据，然后数据会被Observe消化处理掉，不会造成数据的堆积。现实中有很多数据流就是永无止境的，例如点击事件。但也有一些数据流是会终止的，那么如何终止数据流呢？<br>Observable会停止吐出数据，停止调用next函数推送数据，但是不会给Observe一个终止信号，Observe还在傻傻的等着接收Observable传来的数据，所以这样子还是不行，得需要一个宣称Observable终结的方式。</p>
+<h3 id="Observable的终结"><a href="#Observable的终结" class="headerlink" title="Observable的终结"></a>Observable的终结</h3><p>此处需要使用到Observe的<code>complete</code>函数：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> theObserve<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+	<span class="token function-variable function">next</span><span class="token operator">:</span><span class="token parameter">item</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+  <span class="token function-variable function">complete</span><span class="token operator">:</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'no more data'</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>修改onSubscribe函数</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">onSubscribe</span><span class="token operator">=</span><span class="token parameter">observer</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+		<span class="token keyword">let</span> number<span class="token operator">=</span><span class="token number">1</span>
+    <span class="token keyword">const</span> handle<span class="token operator">=</span><span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+    	observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span>number<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span><span class="token punctuation">(</span>number<span class="token operator">></span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      	<span class="token function">clearInterval</span><span class="token punctuation">(</span>handle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        observer<span class="token punctuation">.</span><span class="token function">complete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//调用Observe的complete函数</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token number">1000</span><span class="token punctuation">)</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Observe对象的complete函数何时调用，是有Observable对象决定的，所以完结信号是Observable”推“给Observe的。</p>
+<h3 id="Observable的出错处理"><a href="#Observable的出错处理" class="headerlink" title="Observable的出错处理"></a>Observable的出错处理</h3><p>在Observable和Observer的交流渠道中增加一个新的函数<code>error</code></p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span>Observable<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'rxjs/Observable'</span>
+<span class="token keyword">const</span> <span class="token function-variable function">onSubscribe</span><span class="token operator">=</span><span class="token parameter">observer</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+	observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  observer<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'something wrong'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  observer<span class="token punctuation">.</span><span class="token function">complete</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> source$<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Observable</span><span class="token punctuation">(</span>onSubscribe<span class="token punctuation">)</span>
+<span class="token keyword">const</span> theObserve<span class="token operator">=</span><span class="token punctuation">&#123;</span>
+	<span class="token function-variable function">next</span><span class="token operator">:</span><span class="token parameter">item</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+  <span class="token function-variable function">error</span><span class="token operator">:</span><span class="token parameter">err</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+  <span class="token function-variable function">complete</span><span class="token operator">:</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'no more data'</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+source$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>theObserver<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上输出结果为：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token number">1</span> 
+something wrong<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><strong>在Rxjs中，一个Observable对象只能有一个终结方式，要么出错，要么完结</strong></p>
+<p>onSubscribe的参数observer并不是传给subscribe的参数theObserver，⽽是对theObserver的包装，所以，即使在<code>observer.error</code>被调⽤之后强⾏调⽤<code>observer.complete</code>，也不会真正调⽤到theObserver的complete函数。</p>
+<h3 id="Observe的简单形式"><a href="#Observe的简单形式" class="headerlink" title="Observe的简单形式"></a>Observe的简单形式</h3><pre class="line-numbers language-js" data-language="js"><code class="language-js">source$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>
+ <span class="token parameter">item</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">,</span>
+ <span class="token parameter">err</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">,</span>
+ <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'no more data'</span><span class="token punctuation">)</span>
+ <span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果不处理异常行为，可以将第二个参数改为null。</p>
+<h3 id="退订Observable"><a href="#退订Observable" class="headerlink" title="退订Observable"></a>退订Observable</h3><p>onSubscribe函数返回一个对象，对象包含<code>unsubscribe</code>函数，这个函数清除了<code>setInterval</code>产生的效果。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> <span class="token function-variable function">onSubscribe</span> <span class="token operator">=</span> <span class="token parameter">observer</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> 
+  <span class="token keyword">let</span> number <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> 
+  <span class="token keyword">const</span> handle <span class="token operator">=</span> <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> 
+  	observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span>number<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+  <span class="token keyword">return</span> <span class="token punctuation">&#123;</span> 
+  	<span class="token function-variable function">unsubscribe</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span> 
+ 			 <span class="token function">clearInterval</span><span class="token punctuation">(</span>handle<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+ 		 <span class="token punctuation">&#125;</span> 
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> source$<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Observable</span><span class="token punctuation">(</span>onSubscribe<span class="token punctuation">)</span>
+<span class="token keyword">const</span> subscription<span class="token operator">=</span>source$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token parameter">item</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+	subscription<span class="token punctuation">.</span><span class="token function">unsubscribe</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token number">3500</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>虽然unsubscribe函数调⽤之后，作为Observer不再接受到被推送的数据，但是作为Observable的source$并没有终结，因为始终没有调⽤<code>complete</code>，只不过它再也不会调⽤next函数了。<br><strong>Observable产⽣的事件，只有Observer通过subscribe订阅之后才会收到，在unsubscribe之后就不会再收到。</strong></p>
+<h3 id="Hot-Observable-和-Cold-Observable"><a href="#Hot-Observable-和-Cold-Observable" class="headerlink" title="Hot Observable 和 Cold Observable"></a>Hot Observable 和 Cold Observable</h3><p>假设有这样的场景，⼀个Observable对象有两个Observer对象来订阅，⽽且这两个Observer对象并不是同时订阅，第⼀个Observer对象订阅N秒钟之后，第⼆个Observer对象才订阅同⼀个Observable对象，⽽且，在这N秒钟之内，Observable对象已经吐出了⼀些数据。现在问题来了，后订阅上的Observer，是不是应该接收到“错过”的那些数据呢？</p>
+<ul>
+<li>选择A：错过就错过了，只需要接受从订阅那⼀刻开始Observable产⽣的数据就⾏。</li>
+<li>选择B：不能错过，需要获取Observable之前产⽣的数据。</li>
+</ul>
+<p>选择A，称这样的Observable为<code>Hot Observable</code><br>选择B，称之为<code>ColdObservable。</code></p>
+<h3 id="Hot-Observable"><a href="#Hot-Observable" class="headerlink" title="Hot Observable"></a>Hot Observable</h3><p>对于⼀个HotObservable，概念上是有⼀个独⽴于Observable对象的“⽣产者”，这个“⽣产者”的创建和subscribe调⽤没有关系，subscribe调⽤只是让Observer连接上“⽣产者”⽽已，</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> producer<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">producer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> hot$<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Observable</span><span class="token punctuation">(</span><span class="token parameter">observer</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+	<span class="token comment">//然后让observer去接收producer产生的数据</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Cold-Observable"><a href="#Cold-Observable" class="headerlink" title="Cold Observable"></a>Cold Observable</h3><p>如果设想有⼀个数据“⽣产者”（producer）的⾓⾊，那么，对于Cold Observable，每⼀次订阅，都会产⽣⼀个新的“⽣产者”。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> cold$<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Observable</span><span class="token punctuation">(</span><span class="token parameter">observer</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> producer<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">producer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token comment">//然后让observer去接收producer产生的数据</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="操作符"><a href="#操作符" class="headerlink" title="操作符"></a>操作符</h1><p>对于现实中复杂的问题，并不会创造⼀个数据流之后就直接通过subscribe接上⼀个Observer，往往需要对这个数据流做⼀系列处理，然后才交给Observer。就像⼀个管道，数据从管道的⼀段流⼊，途径管道各个环节，当数据到达Observer的时候，已经被管道操作过，有的数据已经被中途过滤抛弃掉了，有的数据已经被改变了原来的形态，⽽且最后的数据可能来⾃多个数据源，最后Observer只需要处理能够⾛到终点的数据。</p>
+<blockquote>
+<p>在RxJS中，有⼀系列⽤于产⽣Observable函数，这些函数有的凭空创造Observable对象，有的根据外部数据源产⽣Observable对象，更多的是根据其他的Observable中的数据来产⽣新的Observable对象，也就是把上游数据转化为下游数据，所有这些函数统称为操作符。</p>
+</blockquote>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span>Observable<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'rxjs/Observable'</span>
+<span class="token keyword">import</span> <span class="token string">'rxjs/add/operator/map'</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">onSubscribe</span><span class="token operator">=</span><span class="token parameter">observer</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+	observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ 	observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	observer<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> source$<span class="token operator">=</span>Observable<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>onSubscribe<span class="token punctuation">)</span>
+source$<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token operator">=></span>x<span class="token operator">*</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>create可以创造Observable对象,每⼀个操作符都是创造⼀个新的Observable对象，不会对上游的Observable对象做任何修改，符合函数式编程的”数据不可变“要求,操作符就是⽤来产⽣全新Observable对象的函数</strong></p>
+<p>操作符</p>
+<h3 id="操作符分类"><a href="#操作符分类" class="headerlink" title="操作符分类"></a>操作符分类</h3><ul>
+<li>功能分类</li>
+<li>创建类</li>
+<li>转化类</li>
+<li>过滤类</li>
+<li>合并类</li>
+<li>多播类</li>
+<li>错误处理类</li>
+<li>辅助工具类</li>
+<li>条件分支类</li>
+<li>数字和合计类</li>
+<li>背压控制类</li>
+<li>可连接类</li>
+<li>高阶Observable处理类</li>
+<li>静态和实例分类</li>
+</ul>
+<p>所有的操作符都是函数，不过有的操作符是Observable类的静态函数，也就是不需要Observable实例就可以执⾏的函数，所以称为“<strong>静态操作符</strong>”；</p>
+<p>例如of:<br><code>Observable.of=functionToImplementOf;</code><br>在使用方式上：<br><code>const source$=Observable.of(/*一些参数*/);</code></p>
+<p>另⼀类操作符是Observable的实例函数，前提是要有⼀个创建好的Observable对象，这⼀类称为“<strong>实例操作符</strong>”。 比如<code>map</code></p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token class-name">Observable</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>map<span class="token operator">=</span>functionToImplementMap<span class="token punctuation">;</span>
+<span class="token keyword">const</span> result$ <span class="token operator">=</span> source$<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token comment">/*一些参数*/</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h2 id="创建类操作符"><a href="#创建类操作符" class="headerlink" title="创建类操作符"></a>创建类操作符</h2><p>创建类操作符可以凭空创建Observable，并且不需要从其他Observable中获取数据，所以在数据管道中，创建类操作符是数据流的源头。<br>创建同步数据流<br>也可以称为同步Observable，需要关心的是：<br>产生哪些数据<br>数据之间的先后顺序如何<br><code>create</code></p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js">Observable<span class="token punctuation">.</span><span class="token function-variable function">create</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">subscribe</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Observable</span><span class="token punctuation">(</span>subscribe<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="of-列举数据"><a href="#of-列举数据" class="headerlink" title="of 列举数据"></a>of 列举数据</h2><p>利用of操作符可以创建指定数据集合的Observable对象。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span>Observable<span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'rxjs/Observable'</span>
+<span class="token keyword">import</span> <span class="token string">'rxjs/add/Observable/of'</span>
+
+<span class="token keyword">const</span> source$<span class="token operator">=</span>Observable<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span>
+
+<span class="token comment">///////////或者///////////////</span>
+
+<span class="token keyword">import</span> <span class="token punctuation">&#123;</span><span class="token keyword">of</span><span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">'rxjs/observable/of'</span>
+<span class="token keyword">const</span> source$<span class="token operator">=</span><span class="token keyword">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span>
+
+source$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>
+	console<span class="token punctuation">.</span>log<span class="token punctuation">,</span>
+  <span class="token keyword">null</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'complete'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>of吐出的数据 1，2，3是同步输出的，没有时间间隔，of 产生的Cold Observable,对于每一个Observer都会重复吐出同样的一组数据，所以可以反复使用。</p>
+<h2 id="range-指定范围"><a href="#range-指定范围" class="headerlink" title="range 指定范围"></a>range 指定范围</h2><p>产生一个从1到100所有正整数的Observable对象：</p>
+<p><code>const source$=Observable.range(1,100)</code><br>range也是同步的方式，一次性将100个数据都推给Observe</p>
+<h2 id="generate-循环创建"><a href="#generate-循环创建" class="headerlink" title="generate 循环创建"></a>generate 循环创建</h2><p>generate类似于for循环</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> source$ <span class="token operator">=</span> Observable<span class="token punctuation">.</span><span class="token function">generate</span><span class="token punctuation">(</span> 
+  <span class="token number">2</span><span class="token punctuation">,</span> <span class="token comment">// 初始值，相当于for循环中的i=2 </span>
+  <span class="token parameter">value</span> <span class="token operator">=></span> value <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token comment">//继续的条件，相当于for中的条件判断</span>
+  <span class="token parameter">value</span> <span class="token operator">=></span> value <span class="token operator">+</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token comment">//每次值的递增 </span>
+  <span class="token parameter">value</span> <span class="token operator">=></span> value <span class="token operator">*</span> value <span class="token comment">// 产⽣的结果 </span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="repeat-重复数据的数据流"><a href="#repeat-重复数据的数据流" class="headerlink" title="repeat 重复数据的数据流"></a>repeat 重复数据的数据流</h2><p>repeat 的 功能是可以重复上游Observable中的数据若干次。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> source$<span class="token operator">=</span>Observable<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> repeated$<span class="token operator">=</span>source$<span class="token punctuation">.</span><span class="token function">repeat</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><code>source$</code>产生的Observable对象会产生1、2、3三个数据，这个Observable对象是<code>repeated$</code>的上游，理由repeat操作符，重复source$内容10遍。<br>repeat重复功能是基于上游的完结时机的，如果上游没有完结，那么使用repeat是完全没有意义的。</p>
+<h2 id="empty-、-never-、-throw"><a href="#empty-、-never-、-throw" class="headerlink" title="empty 、 never 、 throw"></a>empty 、 never 、 throw</h2><h3 id="empty"><a href="#empty" class="headerlink" title="empty"></a>empty</h3><p>empty产生一个直接完结的Observable对象，没有参数，不产生任何数据。<br><code>const source$=Observable.empty()</code></p>
+<h3 id="throw"><a href="#throw" class="headerlink" title="throw"></a>throw</h3><p>throw产生的Observable对象也是什么都不做，直接出错，抛出错误就是throw的参数。<br><code>const source$=Observable.throw(New Error(&#39;Oops&#39;))</code></p>
+<h3 id="never"><a href="#never" class="headerlink" title="never"></a>never</h3><p>什么也不做，不吐出数据，不完结，不产生错误，就这么待着，到永远。<br><code>const source$=Observable.never()</code></p>
+<h2 id="创建异步数据的Observable对象"><a href="#创建异步数据的Observable对象" class="headerlink" title="创建异步数据的Observable对象"></a>创建异步数据的Observable对象</h2><p>interval和timer ：定时产生数据</p>
+<h3 id="interval"><a href="#interval" class="headerlink" title="interval"></a>interval</h3><p>等同于 JS 中的 setInterval和setTimeout<br><strong>interval 接收 一个数值类型的参数， 代表产生数据的间隔毫秒数， 返回的Observable 对象 是按照这个时间间隔 输出递增的整数序列。</strong><br><code>const source$=Observable.interval(1000)</code></p>
+<p>interval是不会主动调用下游的complete，要想停止这个数据序列，需要退订。</p>
+<h3 id="timer"><a href="#timer" class="headerlink" title="timer"></a>timer</h3><p>timer的第⼀个参数可以是⼀个数值，也可以是⼀个Date类型的对象。如果第⼀个参数是数值，代表毫秒数，产⽣的Observable对象在指定毫秒之后会吐出⼀个数据0，然后⽴刻完结。<br><code>const source$=Observable.timer(1000)</code><br>上⾯的功能也可以通过传递⼀个Date对象给timer来实现，代码如下</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> now<span class="token operator">=</span><span class="token function">newDate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> later<span class="token operator">=</span><span class="token function">newDate</span><span class="token punctuation">(</span>now<span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> source$<span class="token operator">=</span>Observable<span class="token punctuation">.</span><span class="token function">timer</span><span class="token punctuation">(</span>later<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>使⽤数值参数还是使⽤Date对象作为参数，应该根据具体情况确定，如果明确延时产⽣数据的时间间隔，那就应该⽤数值作为参数，如果明确的是⼀个时间点，那⽤Date对象毫⽆疑问是最佳选择。<br>timer还⽀持第⼆个参数，如果使⽤第⼆个参数，那就会产⽣⼀个持续吐出数据的Observable对象，类似interval的数据流。第⼆个参数指定的是各数据之间的时间间隔，从被订阅到产⽣第⼀个数据0的时间间隔，依然由第⼀个参数决定。<br>在下⾯的⽰例代码中，source$被订阅之后，2秒钟的时刻吐出0，然后3秒钟的时刻吐出1，4秒钟的时刻吐出2……依次类推：</p>
+<p><code>const source$=Observable.timer(2000,1000);</code></p>
+<h3 id="from-可把一切转为Observable"><a href="#from-可把一切转为Observable" class="headerlink" title="from : 可把一切转为Observable"></a>from : 可把一切转为Observable</h3><p>from可能是创建类操作符中包容性最强的⼀个了，因为它接受的参数只要“像”Observable就⾏，然后根据参数中的数据产⽣⼀个真正的 Observable对象。<br><code>const source$=Observable.from([1,2,3])</code><br>from 也可以将generator函数的结果转为Observable对象</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">function</span> <span class="token operator">*</span> <span class="token function">generateNumber</span><span class="token punctuation">(</span><span class="token parameter">max</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>i<span class="token operator">&lt;=</span>max<span class="token punctuation">;</span><span class="token operator">++</span>i<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  	<span class="token keyword">yield</span> i<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">const</span> source$<span class="token operator">=</span>Observable<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token function">generateNumber</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>结果为 1，2，3</p>
+<h3 id="from-也可以接收字符串作为参数"><a href="#from-也可以接收字符串作为参数" class="headerlink" title="from 也可以接收字符串作为参数"></a>from 也可以接收字符串作为参数</h3><p><code>const source$=Observable.from(&#39;abc&#39;)</code><br>from会将参数当做是Iterable看待，字符串abc在from看来就是数组[‘a’,’b’,’c’]</p>
+<h3 id="fromPromise-异步处理的交接"><a href="#fromPromise-异步处理的交接" class="headerlink" title="fromPromise :异步处理的交接"></a>fromPromise :异步处理的交接</h3><p> 如果from的参数是Promise对象，那么这个Promise成功结束，from产⽣的Observable对象就会吐出Promise成功的结果，并且⽴刻结束，⽰例代码如下：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">const</span> promise<span class="token operator">=</span>Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'good'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> source$<span class="token operator">=</span>Observable<span class="token punctuation">.</span><span class="token function">from</span><span class="token punctuation">(</span>promise<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+source$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span> 
+  console<span class="token punctuation">.</span>log<span class="token punctuation">,</span>
+	<span class="token parameter">error</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'catch'</span><span class="token punctuation">,</span>error<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'complete'</span><span class="token punctuation">)</span>
+ <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Promise对象虽然也⽀持异步操作，但是它只有⼀个结果，所以当 Promise成功完成的时候，from也知道不会再有新的数据了，所以⽴刻完结了产⽣的Observable对象。<br>当Promise对象以失败⽽告终的时候，from产⽣的Observable对象也会⽴刻产⽣失败事件。</p>
+<h3 id="fromEvent"><a href="#fromEvent" class="headerlink" title="fromEvent"></a>fromEvent</h3><p>fromEvent的第一个参数是一个事件源，在浏览器中，最常见的事件源是DOM元素，第二个参数是事件的名称，对应的DOM事件就是click、mousemove这样的字符串。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token operator">&lt;</span>button id<span class="token operator">=</span><span class="token string">"clickMe"</span><span class="token operator">></span>ClickMe<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+<span class="token operator">&lt;</span>div  id<span class="token operator">=</span><span class="token string">"text"</span><span class="token operator">></span><span class="token number">0</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>目的：点击按钮，id为text的div数字增1。</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">let</span> clickCount<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> event$<span class="token operator">=</span>Rx<span class="token punctuation">.</span>Observable<span class="token punctuation">.</span><span class="token function">fromEvent</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'#clickMe'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'click'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+event$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>
+	<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+  	document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'#text'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>innerText<span class="token operator">=</span><span class="token operator">++</span>clickCount
+  <span class="token punctuation">&#125;</span>  
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>fromEvent是DOM和RxJS世界的桥梁</strong>，产⽣Observable对象之后，就可以完全按照RxJS的规则来处理数据<br>fromEvent除了可以从DOM中获得数据，还可以从Node.js的events中获得数据<br>fromEvent产⽣的是<code>HotObservable</code></p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">wmshero</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://wmshero.github.io/2022/03/22/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BARxjs/">https://wmshero.github.io/2022/03/22/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BARxjs/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">wmshero</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Rxjs/">
+                                    <span class="chip bg-color">Rxjs</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2022/03/23/%E9%A6%96%E5%B1%8F%E6%B8%B2%E6%9F%93%E7%99%BD%E5%B1%8F%E6%97%B6%E9%97%B4%E4%BC%98%E5%8C%96/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="首屏渲染白屏时间优化">
+                        
+                        <span class="card-title">首屏渲染白屏时间优化</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-03-23
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="post-category">
+                                    性能优化
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">
+                        <span class="chip bg-color">性能优化</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/03/20/formily-QA/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="formily-QA">
+                        
+                        <span class="card-title">formily-QA</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/formily/" class="post-category">
+                                    formily
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/formily/">
+                        <span class="chip bg-color">formily</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('2'),
+            headingSelector: 'h2, h3, h4,h1'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4,h1').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="tencent"
+                   type="playlist"
+                   id="2968133060"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="/libs/aplayer/Meting.min.js"></script>
+
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2022</span>
+            
+            <a href="/about" target="_blank">wmshero</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/wmshero" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1494601749@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1494601749" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1494601749" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=wmshero" class="tooltipped" target="_blank" data-tooltip=微信联系我: wmshero" data-position="top" data-delay="50">
+        <i class="fab fa-weixin"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
