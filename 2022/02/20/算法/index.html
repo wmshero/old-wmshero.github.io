@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta name="keywords" content="算法, My blog">
     <meta name="description" content="单链表合并两个有序链表（简单） 21
-递归与回溯跳水板-面试题 16.11顺次数-1291无重复字符的最长子串深度平铺数组
+递归与回溯跳水板-面试题 16.11顺次数-1291无重复字符的最长子串深度平铺数组没有重复项的全排列
 二叉树路径总长
 其他将数字转化为千分位格式合并对象
 正则解析网址参数
-">
+ function perm">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -423,10 +423,15 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h2 id="单链表"><a href="#单链表" class="headerlink" title="单链表"></a>单链表</h2><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/3">合并两个有序链表（简单） 21</a></p>
-<h2 id="递归与回溯"><a href="#递归与回溯" class="headerlink" title="递归与回溯"></a>递归与回溯</h2><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/1">跳水板-面试题 16.11</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/2">顺次数-1291</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/4">无重复字符的最长子串</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/6">深度平铺数组</a></p>
+<h2 id="递归与回溯"><a href="#递归与回溯" class="headerlink" title="递归与回溯"></a>递归与回溯</h2><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/1">跳水板-面试题 16.11</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/2">顺次数-1291</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/4">无重复字符的最长子串</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/6">深度平铺数组</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/10">没有重复项的全排列</a></p>
 <h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/5">路径总长</a></p>
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/7">将数字转化为千分位格式</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/9">合并对象</a></p>
 <h1 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h1><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/8">解析网址参数</a></p>
+<p> function permute(nums) {<br>            const res &#x3D; []<br>            const traceTrack &#x3D; (nums, arr) &#x3D;&gt; {<br>                if (arr.length &#x3D;&#x3D;&#x3D; nums.length) {<br>                    res.push(arr.slice())<br>                    return<br>                }<br>                for (let i &#x3D; 0; i &lt; len; i++) {<br>                    if (arr.includes(nums[i])) continue<br>                    arr.push(nums[i])<br>                    traceTrack(nums, arr)<br>                    arr.pop()<br>                }<br>            }</p>
+<pre><code>        traceTrack(nums, [])
+        return res
+    &#125;
+</code></pre>
 
                 
             </div>

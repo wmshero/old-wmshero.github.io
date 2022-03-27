@@ -733,14 +733,34 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 
 <h3 id="4-代码压缩"><a href="#4-代码压缩" class="headerlink" title="(4).代码压缩"></a>(4).代码压缩</h3><p>在 <code>Webpack3</code> 中，一般使用 <code>UglifyJS</code> 来压缩代码，但是这个是单线程运行的，为了加快效率，可以使用 <code>webpack-parallel-uglify-plugin</code> 来并行运行 UglifyJS，从而提高效率。</p>
 <p>在 <code>Webpack4</code> 中，不需要以上这些操作了，只需要将 mode 设置为 <code>production</code> 就可以默认开启以上功能。代码压缩也是我们必做的性能优化方案，当然我们不止可以压缩 JS 代码，还可以压缩 HTML、CSS 代码，并且在压缩 JS 代码的过程中，我们还可以通过配置实现比如删除 <code>console.log </code>这类代码的功能。</p>
-<h2 id="2-减少-webpack-打包体积"><a href="#2-减少-webpack-打包体积" class="headerlink" title="2. 减少 webpack 打包体积"></a>2. 减少 webpack 打包体积</h2><h3 id="1-按需加载"><a href="#1-按需加载" class="headerlink" title="(1).按需加载"></a>(1).按需加载</h3><h3 id="2-Scope-Hoisting"><a href="#2-Scope-Hoisting" class="headerlink" title="(2).Scope Hoisting"></a>(2).Scope Hoisting</h3><p>Scope Hoisting 会分析出模块之间的依赖关系，尽可能的把打包出来的模块合并到一个函数中去。如果在 <code>Webpack4</code> 中你希望开启这个功能，只需要启用 <code>optimization.concatenateModules</code> 就可以了：</p>
+<h2 id="2-减少-webpack-打包体积"><a href="#2-减少-webpack-打包体积" class="headerlink" title="2. 减少 webpack 打包体积"></a>2. 减少 webpack 打包体积</h2><h3 id="css部分"><a href="#css部分" class="headerlink" title="css部分"></a>css部分</h3><p>重复的<code>style</code>导致<code>build</code>的时候这些无意义的体积激增,这也就是为什么在现在<code>css in js </code>原子化火的理由, 采用<code>css in js</code>或者原子化css可以减少部分体积.</p>
+<h3 id="静态资源部分"><a href="#静态资源部分" class="headerlink" title="静态资源部分"></a>静态资源部分</h3><p>我们或多或少在项目中引入静态文件资源我们以图标<code>icon</code>举例,不是所有文件都需要打包成<code>base64</code>,我们可以根据需要对这些文件进行处理</p>
+<h3 id="代码部分"><a href="#代码部分" class="headerlink" title="代码部分"></a>代码部分</h3><p>业务的拓展包括包的引入，无一例外会增加我们的包体积,对于这些<code>bundle</code>工具而言,有<code>tree-shaking</code>和<code>DEC</code>，但是我们无法确保我们使用的包是否可以支持<code>tree-shaking</code>,所以在面对一些无法tree-shaking的包我们可以使用antd的<code>babel-import</code>插件去做<strong>死码消除</strong>。<br>在编写一些代码的时候我们应该明确指明是否有副作用合理的给代码加上<code>@pure </code>进行标记。拥抱esm的开发方式让这些<code>bunle</code>工具更好的工作，同时在工程上设置<code>sideEffect</code>保证我们能充分的享受到tree-shaking。</p>
+<blockquote>
+<p>Tree Shaking 可以实现删除项目中未被引用的代码</p>
+</blockquote>
+<p>编码部分在源头解决了一些问题后，我们再来思考下在build完他还是那么大该怎么解决。</p>
+<ul>
+<li>使用<code>webpack-bundle-analyzer</code>分析引用的第三方包提及大小，合理的切割code,部分模块设置为<code>external</code> 防止被打包到bundle中,然后发布的过程采用<code>cdn</code>进行替换，如 lodash， dayjs，qs， 等这种纯的js库 。（避免了对这些包的构建）</li>
+<li>使用<code>webpack-analyze</code>或者<code>rollup-analyze</code> 分析工具分析具体chunk 和module。根据业务需要进行优化改造,</li>
+<li>合理思考目前应用的服务群体,到底是兼容到多少版本,这样你才能控制你的<code>babel</code>或者<code>swc</code>需要<code>transform</code>的版本。</li>
+<li>关于<code>@babel/core</code>和<code>@babel/runtime-hepler</code>等包的依赖 ,你应该明确清楚你要如何使用,使用不当导致的体积变大也不是没有。</li>
+<li>使用<code>treser</code>或者<code>esbuild</code>等压缩工具进行代码压缩</li>
+<li>关于<code>source-map</code>在生产环境下你可以关掉这样也会减少体积</li>
+</ul>
+<h3 id="Dev模式下"><a href="#Dev模式下" class="headerlink" title="Dev模式下"></a>Dev模式下</h3><ul>
+<li>如果业务不是强依赖于<code>webpack</code>相关，可以考虑在dev模式下使用vite，根据现有webpack架构设计,根本无法和vite相比，因为两者的工作原理不同，导致了在dev环境下差异明显,</li>
+<li>如果你强依赖于webpack那么你需要增量编译合理利用缓存,其次对于<code>require.context</code>这样的东西应该避免使用,<br>然后<code>ts-loader</code>这些你完全可以使用<code>thread-loader</code>去替代他们，记住多线程构建并不是良药,进程的开销是需要代价的,你应该在本地测试得出我到底需不需要启动多进程以达到最好的效果。</li>
+<li>关于<code>source-map</code>，选择合理的配置模式</li>
+<li>在开发环境下我们或许不需要<code>babel</code>转换到兼容更低的版本。</li>
+</ul>
+<h3 id="Scope-Hoisting"><a href="#Scope-Hoisting" class="headerlink" title="Scope Hoisting"></a>Scope Hoisting</h3><p>Scope Hoisting 会分析出模块之间的依赖关系，尽可能的把打包出来的模块合并到一个函数中去。如果在 <code>Webpack4</code> 中你希望开启这个功能，只需要启用 <code>optimization.concatenateModules</code> 就可以了：</p>
 <pre class="line-numbers language-js" data-language="js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
   <span class="token literal-property property">optimization</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
     <span class="token literal-property property">concatenateModules</span><span class="token operator">:</span> <span class="token boolean">true</span>
   <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="3-Tree-Shaking"><a href="#3-Tree-Shaking" class="headerlink" title="(3).Tree Shaking"></a>(3).Tree Shaking</h3><p>Tree Shaking 可以实现删除项目中未被引用的代码</p>
 
                 
             </div>
