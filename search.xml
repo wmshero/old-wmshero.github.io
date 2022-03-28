@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>symbol</title>
+      <link href="/2022/03/28/symbol/"/>
+      <url>/2022/03/28/symbol/</url>
+      
+        <content type="html"><![CDATA[<h1 id="是什么？"><a href="#是什么？" class="headerlink" title="是什么？"></a>是什么？</h1><p><code>symbol</code> 是一种基本数据类型。<code>Symbol()</code>函数会返回<code>symbol</code>类型的值，该类型具有静态属性和静态方法。它的静态属性会暴露几个内建的成员对象；它的静态方法会暴露全局的<code>symbol</code>注册，且类似于内建对象类，但作为构造函数来说它并不完整，因为它不支持语法：”<code>new Symbol()</code>“。</p><h1 id="为什么有symbol？"><a href="#为什么有symbol？" class="headerlink" title="为什么有symbol？"></a>为什么有symbol？</h1><p>每个从Symbol()返回的<code>symbol</code>值都是唯一的。一个symbol值能作为对象属性的标识符；这是该数据类型仅有的目的。</p><h1 id="怎么使用？"><a href="#怎么使用？" class="headerlink" title="怎么使用？"></a>怎么使用？</h1><h2 id="对-symbol-使用-typeof-运算符"><a href="#对-symbol-使用-typeof-运算符" class="headerlink" title="对 symbol 使用 typeof 运算符"></a>对 symbol 使用 typeof 运算符</h2><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">typeof</span> <span class="token function">Symbol</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'symbol'</span><span class="token keyword">typeof</span> <span class="token function">Symbol</span><span class="token punctuation">(</span><span class="token string">'foo'</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token string">'symbol'</span><span class="token keyword">typeof</span> Symbol<span class="token punctuation">.</span>iterator <span class="token operator">===</span> <span class="token string">'symbol'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h1 id="坑？"><a href="#坑？" class="headerlink" title="坑？"></a>坑？</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> javascript </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>vue3新特性</title>
       <link href="/2022/03/28/vue3%E6%96%B0%E7%89%B9%E6%80%A7/"/>
       <url>/2022/03/28/vue3%E6%96%B0%E7%89%B9%E6%80%A7/</url>
