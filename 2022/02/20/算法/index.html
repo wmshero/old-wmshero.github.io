@@ -428,11 +428,6 @@
 <h1 id="堆-x2F-栈-x2F-队列"><a href="#堆-x2F-栈-x2F-队列" class="headerlink" title="堆&#x2F;栈&#x2F;队列"></a>堆&#x2F;栈&#x2F;队列</h1><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/14">用两个栈实现队列</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/15">包含min函数的栈</a></p>
 <h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/7">将数字转化为千分位格式</a><br><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/9">合并对象</a></p>
 <h1 id="正则"><a href="#正则" class="headerlink" title="正则"></a>正则</h1><p><a target="_blank" rel="noopener" href="https://github.com/wmshero/leetcode-javascript/issues/8">解析网址参数</a></p>
-<p> function permute(nums) {<br>            const res &#x3D; []<br>            const traceTrack &#x3D; (nums, arr) &#x3D;&gt; {<br>                if (arr.length &#x3D;&#x3D;&#x3D; nums.length) {<br>                    res.push(arr.slice())<br>                    return<br>                }<br>                for (let i &#x3D; 0; i &lt; len; i++) {<br>                    if (arr.includes(nums[i])) continue<br>                    arr.push(nums[i])<br>                    traceTrack(nums, arr)<br>                    arr.pop()<br>                }<br>            }</p>
-<pre><code>        traceTrack(nums, [])
-        return res
-    &#125;
-</code></pre>
 
                 
             </div>
