@@ -4,11 +4,13 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="css+js实现打字效果, My blog">
-    <meta name="description" content="jsfunction init () &amp;#123;
-  function typeLoop() &amp;#123;
-    textUtils.typeText(&#39;BiliBili!&#39;)
-      .then(() =&gt; utils.wait(">
+    <meta name="keywords" content="cors跨域, My blog">
+    <meta name="description" content="跨域是因为浏览器的同源策略，同源指同协议、主机、端口号。跨域是为了浏览器的安全考虑。cors（跨域资源共享），它需要服务器和浏览器同时支持，
+
+前提是后端已经实现了cors
+
+webpack config:
+module.exports =">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +22,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>css+js实现打字效果 | My blog</title>
+    <title>cors跨域 | My blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
@@ -246,12 +248,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">css+js实现打字效果</h1>
+                    <h1 class="description center-align post-title">cors跨域</h1>
                 </div>
             </div>
         </div>
@@ -367,12 +369,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/javascript/">
-                                <span class="chip bg-color">javascript</span>
-                            </a>
-                        
-                            <a href="/tags/css/">
-                                <span class="chip bg-color">css</span>
+                            <a href="/tags/%E8%B7%A8%E5%9F%9F/">
+                                <span class="chip bg-color">跨域</span>
                             </a>
                         
                     </div>
@@ -383,8 +381,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/javascript/" class="post-category">
-                                javascript
+                            <a href="/categories/%E8%B7%A8%E5%9F%9F/" class="post-category">
+                                跨域
                             </a>
                         
                     </div>
@@ -396,7 +394,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-04-17
+                    2022-06-17
                 </div>
                 
 
@@ -420,139 +418,41 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="js"><a href="#js" class="headerlink" title="js"></a>js</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">init</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token keyword">function</span> <span class="token function">typeLoop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    textUtils<span class="token punctuation">.</span><span class="token function">typeText</span><span class="token punctuation">(</span><span class="token string">'BiliBili!'</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> utils<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> textUtils<span class="token punctuation">.</span><span class="token function">removeText</span><span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> textUtils<span class="token punctuation">.</span><span class="token function">typeText</span><span class="token punctuation">(</span><span class="token string">'World!'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> utils<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> textUtils<span class="token punctuation">.</span><span class="token function">removeText</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>typeLoop<span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span>
-  utils<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    textUtils<span class="token punctuation">.</span><span class="token function">clearText</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    textUtils<span class="token punctuation">.</span><span class="token function">typeText</span><span class="token punctuation">(</span><span class="token string">'Hello, '</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>typeLoop<span class="token punctuation">)</span>
+                <p>跨域是因为浏览器的同源策略，同源指同协议、主机、端口号。跨域是为了浏览器的安全考虑。<br>cors（跨域资源共享），它需要服务器和浏览器同时支持，</p>
+<blockquote>
+<p>前提是后端已经实现了cors</p>
+</blockquote>
+<h1 id="webpack-config"><a href="#webpack-config" class="headerlink" title="webpack config:"></a>webpack config:</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js">
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">webpack</span><span class="token operator">:</span> webpackConfig<span class="token punctuation">,</span>
+  <span class="token comment">//处理跨域</span>
+  <span class="token literal-property property">devServer</span><span class="token operator">:</span> <span class="token function">overrideDevServer</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">config</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    config<span class="token punctuation">.</span>proxy <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+      <span class="token string-property property">'/api'</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token literal-property property">target</span><span class="token operator">:</span> <span class="token string">'http://XXXXXXX'</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">changeOrigin</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">pathRewrite</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span> <span class="token string-property property">'^/api'</span><span class="token operator">:</span> <span class="token string">''</span> <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> config
   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<span class="token keyword">const</span> textNode <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'type-text'</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> text <span class="token operator">=</span> <span class="token string">''</span>
+<h1 id="axios封装："><a href="#axios封装：" class="headerlink" title="axios封装："></a>axios封装：</h1><blockquote>
+<p>axios 不需要设置baseURL了！！</p>
+</blockquote>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">// get请求</span>
+axios<span class="token punctuation">.</span>get <span class="token operator">=</span> <span class="token punctuation">(</span>url<span class="token operator">:</span> string<span class="token punctuation">,</span> params<span class="token operator">?</span><span class="token operator">:</span> object<span class="token punctuation">)</span><span class="token operator">:</span> Promise<span class="token operator">&lt;</span>any<span class="token operator">></span> <span class="token operator">=></span>
+  <span class="token function">axios</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">method</span><span class="token operator">:</span> <span class="token string">'get'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">url</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/api</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>url<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+    params<span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token function">reportDetail</span><span class="token punctuation">(</span>id<span class="token operator">:</span> string<span class="token punctuation">,</span> expand<span class="token operator">?</span><span class="token operator">:</span> string<span class="token punctuation">)</span><span class="token operator">:</span> Promise<span class="token operator">&lt;</span>Report<span class="token operator">></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> $axios<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">/reports/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">$&#123;</span>id<span class="token interpolation-punctuation punctuation">&#125;</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> expand <span class="token punctuation">&#125;</span> <span class="token keyword">as</span> any<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<span class="token keyword">const</span> utils <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token function-variable function">genRandomInterval</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">const</span> randomMsInterval <span class="token operator">=</span> <span class="token number">100</span> <span class="token operator">*</span> Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token keyword">const</span> msInterval <span class="token operator">=</span> randomMsInterval <span class="token operator">&lt;</span> <span class="token number">50</span> <span class="token operator">?</span> <span class="token number">10</span> <span class="token operator">:</span> randomMsInterval
-    <span class="token keyword">return</span> msInterval
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">wait</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">time</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-      <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> time<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">const</span> characterUtils <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token function-variable function">pushCharacter</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">character</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    text <span class="token operator">+=</span> character
-    textUtils<span class="token punctuation">.</span><span class="token function">updateText</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">popCharacter</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    text <span class="token operator">=</span> text<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> text<span class="token punctuation">.</span>length <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
-    textUtils<span class="token punctuation">.</span><span class="token function">updateText</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">typeCharacter</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">character</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">const</span> msInterval <span class="token operator">=</span> utils<span class="token punctuation">.</span><span class="token function">genRandomInterval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-      characterUtils<span class="token punctuation">.</span><span class="token function">pushCharacter</span><span class="token punctuation">(</span>character<span class="token punctuation">)</span>
-      utils<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span>msInterval<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">removeCharacter</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-      <span class="token keyword">const</span> msInterval <span class="token operator">=</span> utils<span class="token punctuation">.</span><span class="token function">genRandomInterval</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-      characterUtils<span class="token punctuation">.</span><span class="token function">popCharacter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-      utils<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span>msInterval<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">const</span> textUtils <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  <span class="token function-variable function">updateText</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    textNode<span class="token punctuation">.</span>innerText <span class="token operator">=</span> text
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">clearText</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    text <span class="token operator">=</span> <span class="token string">''</span>
-    textUtils<span class="token punctuation">.</span><span class="token function">updateText</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">typeText</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">text</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-      <span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">_type</span> <span class="token punctuation">(</span><span class="token parameter">index</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        characterUtils<span class="token punctuation">.</span><span class="token function">typeCharacter</span><span class="token punctuation">(</span>text<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-          <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">&lt;</span> text<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token function">_type</span><span class="token punctuation">(</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-          <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-            <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-  <span class="token function-variable function">removeText</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">amount</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token parameter">resolve</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-      <span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token function">_remove</span> <span class="token punctuation">(</span><span class="token parameter">index</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        characterUtils<span class="token punctuation">.</span><span class="token function">removeCharacter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
-          <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">+</span> <span class="token number">1</span> <span class="token operator">&lt;</span> amount<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token function">_remove</span><span class="token punctuation">(</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-          <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
-            <span class="token function">resolve</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-          <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<h1 id="css"><a href="#css" class="headerlink" title="css"></a>css</h1><pre class="line-numbers language-css" data-language="css"><code class="language-css"><span class="token selector">body</span> <span class="token punctuation">&#123;</span>
-  <span class="token property">height</span><span class="token punctuation">:</span> 100vh<span class="token punctuation">;</span>
-  <span class="token property">background-color</span><span class="token punctuation">:</span> #111<span class="token punctuation">;</span>
-  <span class="token property">color</span><span class="token punctuation">:</span> #FFF<span class="token punctuation">;</span>
-  <span class="token property">font-size</span><span class="token punctuation">:</span> 3em<span class="token punctuation">;</span>
-  <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
-  <span class="token property">align-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
-  <span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token selector">.blinking-cursor</span> <span class="token punctuation">&#123;</span>
-  <span class="token property">animation</span><span class="token punctuation">:</span> blink 1s <span class="token function">steps</span><span class="token punctuation">(</span>2<span class="token punctuation">,</span> start<span class="token punctuation">)</span> infinite<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token atrule"><span class="token rule">@keyframes</span> blink</span> <span class="token punctuation">&#123;</span>
-  <span class="token selector">to</span> <span class="token punctuation">&#123;</span>
-    <span class="token property">visibility</span><span class="token punctuation">:</span> hidden<span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h1 id="html"><a href="#html" class="headerlink" title="html"></a>html</h1><pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Document<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>./style.css<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>link</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>type-text<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>...<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>blinking-cursor<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>_<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
-
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>./index.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -578,7 +478,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://wmshero.github.io/2022/04/17/css-js%E5%AE%9E%E7%8E%B0%E6%89%93%E5%AD%97%E6%95%88%E6%9E%9C/">https://wmshero.github.io/2022/04/17/css-js%E5%AE%9E%E7%8E%B0%E6%89%93%E5%AD%97%E6%95%88%E6%9E%9C/</a>
+                    <a href="https://wmshero.github.io/2022/06/17/cors%E8%B7%A8%E5%9F%9F/">https://wmshero.github.io/2022/06/17/cors%E8%B7%A8%E5%9F%9F/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -616,12 +516,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/javascript/">
-                                    <span class="chip bg-color">javascript</span>
-                                </a>
-                            
-                                <a href="/tags/css/">
-                                    <span class="chip bg-color">css</span>
+                                <a href="/tags/%E8%B7%A8%E5%9F%9F/">
+                                    <span class="chip bg-color">跨域</span>
                                 </a>
                             
                         </div>
@@ -795,9 +691,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/06/17/cors%E8%B7%A8%E5%9F%9F/">
                     <div class="card-image">
@@ -815,9 +712,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-06-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-06-17
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -830,6 +727,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -848,13 +746,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/03/28/symbol/">
+                <a href="/2022/04/17/css-js%E5%AE%9E%E7%8E%B0%E6%89%93%E5%AD%97%E6%95%88%E6%9E%9C/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="symbol">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="css+js实现打字效果">
                         
-                        <span class="card-title">symbol</span>
+                        <span class="card-title">css+js实现打字效果</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -865,7 +763,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-03-28
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-04-17
                             </span>
                         <span class="publish-author">
                             
@@ -884,6 +782,10 @@
                     
                     <a href="/tags/javascript/">
                         <span class="chip bg-color">javascript</span>
+                    </a>
+                    
+                    <a href="/tags/css/">
+                        <span class="chip bg-color">css</span>
                     </a>
                     
                 </div>
